@@ -56,15 +56,38 @@ Unix timestamp. The DAQ shall also provide the DTP and C2P with updated data
 in every sample interval.
 
 ### Command and Control Plane
-The C2 plane shall receive the following commands from the operator
+The command and Control Plane receives the following radio command signals from the operator. Corresponding control signal is then sent to propulsion system. The Radio command signals from the operator SHALL be a length 3 array of of type `int8_t`. Each element of the array is responsible for 1 component of control:
 
-1. Ignition
-2. Engine abort
-3. Oxidizer vent
+1. Open/Close of fuel-combustion ball valve
+2. Open/Close of fueling solenoid valve
+3. Open/Close of venting solenoid valve
 
-and send the appropriate control signals to the propulsion system. The C2 plane
-shall also respond automatically to the following conditions to ensure operator
-and bystander safety:
+The commands values used by each of the command is outlined in the forllowing tables
 
-1. Oxidizer over-pressurization
-2. Ignition failure
+- Vall valve control
+|value|Description|
+|-----|-----------|
+|0|Reversed movement of the valve, which leads to the #opening# of the valve.|
+|1|Forward movement of the valve, which leads to the #closing# of the valve.|
+|-1|Standby signal that does not lead to any change in current valve action.|
+|127|signal for #Ignition# Sequence, including opening the valve for a preset amount of time, before closing.|
+
+- Venting solenoid valve control
+|value|Description|
+|-----|-----------|
+|0|#Opening# of the venting valve|
+|1|#Closing# of the venting valve|
+|-1|Standbay Signal, with no change in current valve action|
+
+
+- Fuel solenoid valve control
+|value|Description|
+|-----|-----------|
+|0|#Opening# of the Fuel valve|
+|1|#Closing# of the Fuel valve|
+|-1|Standbay Signal, with no change in current valve action|
+
+One example of a command would be `{1,-1,0}`, denoting the unlikely command of forward action of ball valve, no change in action of venting valve, and the closing of fuel valve. For future expansion of the commands, it is recommanded that any simple command should obtain a value ascending from 1, whilst complex sequence command should obtain a value descending from 127. Simple and sequence commands are defined as:
+
+-  Simple command is a command that is accomplished by #one# #continuous# and #unidirectional# action of the valve.
+- Sequence commands is a commands that is accomplished by #multiple# #discontinuous(e.g. with intervals)# and/or #multidirectional# action of the valve.
