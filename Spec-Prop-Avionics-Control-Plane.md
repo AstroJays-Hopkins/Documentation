@@ -127,27 +127,27 @@ particular needs.
 
 |value|Description|
 |-----|-----------|
-|0|Reversed movement of the valve.|
-|1|Forward movement of the valve.|
-|-1|Standby signal that does not lead to any change in current valve action.|
-|127|signal for **Ignition** Sequence, including opening the valve for a preset amount of time, before closing.|
+|0|Standby signal that does not lead to any change in current valve action.|
+|1|Reversed movement of the valve.|
+|2|Forward movement of the valve.|
+|255|signal for **Ignition** Sequence, including opening the valve for a preset amount of time, before closing.|
 
 **Venting solenoid valve control**
 
 |value|Description|
 |-----|-----------|
-|0|**Closing** of the venting valve|
-|1|**Opening** of the venting valve|
-|-1|Standbay Signal, with no change in current valve action|
+|0|Standbay Signal, with no change in current valve action|
+|1|**Closing** of the venting valve|
+|2|**Opening** of the venting valve|
 
 
 **Fuel solenoid valve control**
 
 |value|Description|
 |-----|-----------|
-|0|**Closing** of the Fuel valve|
-|1|**Opening** of the Fuel valve|
-|-1|Standbay Signal, with no change in current valve action|
+|0|Standbay Signal, with no change in current valve action|
+|1|**Closing** of the Fuel valve|
+|2|**Opening** of the Fuel valve|
 
 One example of a command would be `{1,-1,0}`, denoting the unlikely command of
 forward action of ball valve, no change in action of venting valve, and the
