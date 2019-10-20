@@ -1,6 +1,6 @@
 # Specifications for Control Plane used by Prop Avionics
-Version: 0.2.0  
-Date: 19 October 2019  
+Version: 0.3.0  
+Date: 20October 2019  
 Status: Draft  
 Type: Component Specification  
 
@@ -21,6 +21,10 @@ following format:
 |1|Packet Type|
 |2...n|Packet Payload|
 
+Bytes 0-1 are considered the "header" of the packet and primarily serve as
+metadata that allow recievers to choose how to handle packets with minimal
+overhead.
+
 The sender/reciever ID shall be an 8 bit integer (uint8_t) with the high 4 bits
 representing the sender ID and the low 4 bits representing the reciever ID. That
 is:
@@ -33,14 +37,30 @@ Reciever ID = 0b0000 = 0
 
 These IDs must follow the table below:
 
-|C2 Plane Component| ID|
-|------------------|---|
+|C2 Plane Component|ID|
+|------------------|--|
 |Ground Station|0|
 |Ignition (Engine) Computer|1|
 |Relay Box Controller|2|
+|**Broadcast**|15|
+
+NOTE: ID #15 is reserved for broadcast messages sent to all radio devices on the
+      same network and thus the amximum devices that can be conencted to the
+      same network as of this spec is 15. 
 
 Thus, if the Ground Station were to send a packet to the Ignition Computer, it
-would send 0b00000001 in the 1 byte of its radio packet.
+would send 0b00000001 in the 1 byte of its radio packet. This also means that
+the sender of a packet can be determined by parsing byte 1 of the packet.
+
+Packet types must be one of the following:
+
+|Packet Type         |Code|
+|--------------------|----|
+|NOOP (does nothing) |   0|
+|GS State Command    |   1|
+|Heartbeat Request   |   2|
+|ACK                 | 100|
+|NACK                | 101|
 
 ### Synchronization and Awknowledgement
 The C2 plane uses an _acked_ radio protocol. This means that every command sent
@@ -62,6 +82,30 @@ repeat forever:
              if no response, and time is over ack timeout:
                  resend only if there are retries left, otherwise light up transmission error led
 ```
+
+Heartbeat Request Packet Format:
+
+|Packet Byte|      Content|
+|-----------|-------------|
+|        0-1|HEADER       |
+|          2|Sequence Code|
+
+ACK Packet Format:
+
+|Packet Byte|      Content|
+|-----------|-------------|
+|        0-1|HEADER       |
+|          2|Sequence Code|
+
+
+The sequence code is a pseudo-unique code that matches request packets with
+their corresponding ACK packets. Sequence codes should be incremented after
+every ack'd packet transmission and should roll over at 256 (uint8_t will do
+this automatically).  All ack'd packets transmitted from the same node should
+use and increment the same sequence node counter to ensure that all packets
+transmistted in a short time window fromt eh node have different sequence codes.
+Packets that require awknowledgement should include a sequence code so the
+resulting ack can be tracked back to the originating request.
 
 ### Valve Control
 The ignition computer receives valve control commands from the
