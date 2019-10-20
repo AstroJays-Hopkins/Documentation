@@ -108,6 +108,18 @@ Packets that require awknowledgement should include a sequence code so the
 resulting ack can be tracked back to the originating request.
 
 ### Valve Control
+
+**Valve Control Packet**
+
+|Packet Byte|         Content|
+|-----------|----------------|
+|        0-1|HEADER          |
+|          2|Seqeunce Code   |
+|          3|Ball Valve State|
+|          4|Vent State      |
+|          5|Fuel Valve State|
+
+
 The ignition computer receives valve control commands from the
 operator. Corresponding control signals are then sent to the propulsion system.
 Radio commands for each valve shall be represented by an integer value, should
