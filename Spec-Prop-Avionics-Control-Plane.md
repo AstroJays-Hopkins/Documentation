@@ -1,6 +1,6 @@
 # Specifications for Control Plane used by Prop Avionics
-Version: 0.3.0  
-Date: 20October 2019  
+Version: 0.4.0  
+Date: 21 October 2019  
 Status: Draft  
 Type: Component Specification  
 
