@@ -1,5 +1,5 @@
 # Specifications for Control Plane used by Prop Avionics
-Version: 0.4.0  
+Version: 0.5.0  
 Date: 21 October 2019  
 Status: Draft  
 Type: Component Specification  
@@ -9,6 +9,39 @@ The command and control (C2) plane is responsible for communicating with
 onboard systems such as the engine, and ensure they remain responsive and under
 operator control at all times. Control signals shall be transmitted over 915Mhz
 LoRa radio
+
+## I2C Protocol
+I2C shall be used as the inter-board communication method of choice between the
+custom controllers in this system. The I2C protocol should follow the following 
+
+**Device IDs**
+
+|Address|Device                 |
+|-------|-----------------------|
+|     10|Engine Controller      |
+|     11|Ground Valve Controller|
+|     48|ADC (for PTs)          |
+
+To get the current EC state, request a single byte over I2C.
+
+**EC State packet**
+
+|Bit 7 |Bit 6 |Bit 5 |Bit 4          |Bit 3 |Bit 2 |Bit 1       |Bit 0|
+|------|------|------|---------------|------|------|------------|-----|
+|null  |null  |null  |Req MV-G1 State|eMatch|MV-R1 |MV-R1 moving|MV-S1|
+
+The EC will accept the following single byte write to set modifiable state
+
+**EC Command Packet**a
+
+|Bit 7 |Bit 6 |Bit 5 |Bit 4 |Bit 3 |Bit 2 |Bit 1       |Bit 0     |
+|------|------|------|------|------|------|------------|----------|
+|null  |null  |null  |null  |null  |null  |Vent        |E Shutdown|
+
+Since the PI serves as the bus master, it should check the `Requested MV-G1
+State` and compare it to the last one sent to the Ground valve controller. If it
+is different it should construct a single byte command packet with value `1` and
+sent it to the Ground valve Controller.
 
 ## Radio protocol
 The Ground Station, Relay Box and Ignition computer shall all implement the C2
