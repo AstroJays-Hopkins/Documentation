@@ -10,5 +10,13 @@ filename. All documents hsould be wirtten in properly formatted markdown, with
 a maximum line width of 100 characters.
 
 ## Listing
-- Spec-Prop-Avionics.md: Specifications for the entire propusion avionics
-  system
+
+### Specifications
+- Propulsion Avionics
+    - [System Specifications](prop-avionics/spec-system.md)
+    - [Control Plane Specifications](prop-avionics/spec-control-plane.md)
+
+### Guides
+- General
+    - [Bit Manipulations](guide-bits.md)
+
