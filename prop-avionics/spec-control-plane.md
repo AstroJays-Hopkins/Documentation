@@ -1,6 +1,6 @@
 # Specifications for Control Plane used by Prop Avionics
-Version: 0.5.0  
-Date: 21 October 2019  
+Version: 0.5.1  
+Date: 28 October 2019  
 Status: Draft  
 Type: Component Specification  
 
@@ -36,7 +36,10 @@ The EC will accept the following single byte write to set modifiable state
 
 |Bit 7 |Bit 6 |Bit 5 |Bit 4 |Bit 3 |Bit 2 |Bit 1       |Bit 0     |
 |------|------|------|------|------|------|------------|----------|
-|null  |null  |null  |null  |null  |null  |Vent        |E Shutdown|
+|null  |null  |null  |null  |null  |Vent  |Vent        |E Shutdown|
+
+* Vent is a two bit number to contain all of its states, with MSB at Bit 2 and
+  LSB at bit 1.
 
 Since the PI serves as the bus master, it should check the `Requested MV-G1
 State` and compare it to the last one sent to the Ground valve controller. If it
