@@ -1,4 +1,10 @@
-# Keywords for use in specifications
+---
+title: "Specification Keywords"
+linkTitle: "Specification Keywords"
+weight: 1
+description: >
+  Keywords for Use in Specifications
+---
 Version 1.0.0  
 Date: 29 September 2019  
 Status: Current  
@@ -6,7 +12,6 @@ Type: Meta Specification
 ID: 1M
 _based on [rfc2119](https://www.ietf.org/rfc/rfc2119.txt)_
 
-## Desciption
 The following keywords shall carry special meaning when used within a
 specification:
 

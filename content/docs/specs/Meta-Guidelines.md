@@ -1,9 +1,16 @@
-# Guidelines for Specification Documents 
+---
+title: "Specification Guidelines"
+linkTitle: "Specification Guidelines"
+weight: 1
+description: >
+  Guidelines for Specification Documents
+---
 Version: 0.0.1  
 Date: 29 September 2019  
 Status: Draft  
 Type: Meta-Specification  
 ID: 0M
+
 
 ## Description
 All specifications must have the following components:

@@ -1,4 +1,10 @@
-# Specifications for Propulsion Avionics
+---
+title: "General"
+linkTitle: "General"
+weight: 1
+description: >
+  Simple binary bit operations
+---
 Version: 0.1.0  
 Date: 19 October 2019  
 Status: Draft  

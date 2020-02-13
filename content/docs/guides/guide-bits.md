@@ -1,4 +1,10 @@
-# Bit manipulations
+---
+title: "Bit Manipulations"
+linkTitle: "Bit Manipulations"
+weight: 1
+description: >
+  Simple binary bit operations
+---
 Version: 0.1.0  
 Date: 28 October 2019  
 Status: Draft  
