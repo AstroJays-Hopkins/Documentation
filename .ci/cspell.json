@@ -1,0 +1,15 @@
+{
+    "version": "0.1",
+    "language": "en",
+    "words": [],
+    "flagWords": [
+        "hte",
+        "fo",
+        "si"
+    ],
+    "allowCompoundWords": true,
+    "dictionaries": ["en_US", "companies", "cpp", "softwareTerms", "custom"],
+    "dictionaryDefinitions": [
+        { "name": "custom", "path": "./dict.txt"}
+    ]
+} 
