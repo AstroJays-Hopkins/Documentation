@@ -1,4 +1,10 @@
-# Specification template
+---
+title: "Specification Template"
+linkTitle: "Specification Template"
+weight: 1
+description: >
+  Simple binary bit operations
+---
 Version: 0.1.0  
 Date: 29 September 2019  
 Status: Provisional Document  
@@ -10,7 +16,7 @@ Copy and paste the following into a markdown file, edit out the placeholders,
 and remove uneeded portions.
 
 
-````markdown
+````
 # Specifications for [system]
 Version: [version]  
 Date: [Date]  

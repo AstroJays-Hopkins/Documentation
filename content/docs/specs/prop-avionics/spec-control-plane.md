@@ -1,4 +1,10 @@
-# Specifications for Control Plane used by Prop Avionics
+---
+title: "Control Plane"
+linkTitle: "Control Plane"
+weight: 2
+description: >
+  Simple binary bit operations
+---
 Version: 0.5.1  
 Date: 28 October 2019  
 Status: Draft  
