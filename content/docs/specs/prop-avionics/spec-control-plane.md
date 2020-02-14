@@ -54,27 +54,27 @@ sent it to the Ground valve Controller.
 
 ## Radio protocol
 The Ground Station, Relay Box and Ignition computer shall all implement the C2
-over 915Mhz LoRa radiio. Each packet sent over the LoRa network shall follow the
+over 915Mhz LoRa radio. Each packet sent over the LoRa network shall follow the
 following format:
 
 |Packet Byte|Description|
 |-----------|-----------|
-|0|Sender/Reciever ID byte|
+|0|Sender/Receiver ID byte|
 |1|Packet Type|
 |2...n|Packet Payload|
 
 Bytes 0-1 are considered the "header" of the packet and primarily serve as
-metadata that allow recievers to choose how to handle packets with minimal
+metadata that allow receivers to choose how to handle packets with minimal
 overhead.
 
-The sender/reciever ID shall be an 8 bit integer (uint8_t) with the high 4 bits
-representing the sender ID and the low 4 bits representing the reciever ID. That
+The sender/receiver ID shall be an 8 bit integer (uint8_t) with the high 4 bits
+representing the sender ID and the low 4 bits representing the receiver ID. That
 is:
 
 ```text
 0b11110000 will be split into
 Sender ID = 0b1111 = 15
-Reciever ID = 0b0000 = 0
+Receiver ID = 0b0000 = 0
 ```
 
 These IDs must follow the table below:
@@ -87,7 +87,7 @@ These IDs must follow the table below:
 |**Broadcast**|15|
 
 NOTE: ID #15 is reserved for broadcast messages sent to all radio devices on the
-      same network and thus the amximum devices that can be conencted to the
+      same network and thus the maximum devices that can be connected to the
       same network as of this spec is 15. 
 
 Thus, if the Ground Station were to send a packet to the Ignition Computer, it
@@ -104,9 +104,9 @@ Packet types must be one of the following:
 |ACK                 | 100|
 |NACK                | 101|
 
-### Synchronization and Awknowledgement
+### Synchronization and Acknowledgemen
 The C2 plane uses an _acked_ radio protocol. This means that every command sent
-from the Grand Station to the rocket must be awknowledged by a corresponding
+from the Grand Station to the rocket must be acknowledged by a corresponding
 packet from the rocket to be considered successfully transmitted. However, since
 only the newest state of the ground station needs to be carried out by the
 rocket, only the _latest command packet_ will need to be acked. 
@@ -145,8 +145,8 @@ their corresponding ACK packets. Sequence codes should be incremented after
 every ack'd packet transmission and should roll over at 256 (uint8_t will do
 this automatically).  All ack'd packets transmitted from the same node should
 use and increment the same sequence node counter to ensure that all packets
-transmistted in a short time window fromt eh node have different sequence codes.
-Packets that require awknowledgement should include a sequence code so the
+transmitted in a short time window from the node have different sequence codes.
+Packets that require acknowledgement should include a sequence code so the
 resulting ack can be tracked back to the originating request.
 
 ### Valve Control
@@ -156,7 +156,7 @@ resulting ack can be tracked back to the originating request.
 |Packet Byte|         Content|
 |-----------|----------------|
 |        0-1|HEADER          |
-|          2|Seqeunce Code   |
+|          2|Sequence Code   |
 |          3|Ball Valve State|
 |          4|Vent State      |
 |          5|Fuel Valve State|
@@ -190,7 +190,7 @@ particular needs.
 
 |value|Description|
 |-----|-----------|
-|0|Standbay Signal, with no change in current valve action|
+|0|Standby Signal, with no change in current valve action|
 |1|**Closing** of the venting valve|
 |2|**Opening** of the venting valve|
 
@@ -199,13 +199,13 @@ particular needs.
 
 |value|Description|
 |-----|-----------|
-|0|Standbay Signal, with no change in current valve action|
+|0|Standby Signal, with no change in current valve action|
 |1|**Closing** of the Fuel valve|
 |2|**Opening** of the Fuel valve|
 
 One example of a command would be `{1,-1,0}`, denoting the unlikely command of
 forward action of ball valve, no change in action of venting valve, and the
-closing of fuel valve. For future expansion of the commands, it is recommanded
+closing of fuel valve. For future expansion of the commands, it is recommended
 that any simple command should obtain a value ascending from 1, whilst complex
 sequence command should obtain a value descending from 127. For the valves used,
 Simple and sequence commands are defined as:

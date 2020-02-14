@@ -15,13 +15,13 @@ ID: 3G
 ## Overview
 Data can be packed more compactly than even the smallest primitive type allow by
 manipulating the individual bytes of the numbers. For example, an 8 bit unsigned
-integer (`uint8_t`) can contain the number from 0-255, 8 boolean falgs, 4 two
+integer (`uint8_t`) can contain the number from 0-255, 8 boolean flags, 4 two
 bit numbers (0-3), a combination of 3-bit numbers (0-8) and two bit number, 2
-4-bit numbers (0-15), or any combination of these. In gneeral, the smallest
+4-bit numbers (0-15), or any combination of these. In general, the smallest
 on-wire primitive type in modern programming languages are at least 8 bits wide,
 even boolean type which can only hold two states. In a bandwidth constrained
 application like long-distance radio signaling, every bit matters, and thus Bit
-manipulation become a handy method to pack more dath in much less space.
+manipulation become a handy method to pack more data in much less space.
 
 ## Basic Operations
 
@@ -63,10 +63,10 @@ truth tables (A,B are inputs, Y is the output):
 |1|1|0|
 |0|1|1|
 
-These operations can be used formally to do boolean algebra. However, froma
+These operations can be used formally to do boolean algebra. However, from a
 practical perspective, for data packing purposes, each of these operator have
-somewhat specific functions. An AND opertor serves as a mask, allowing specific
-bits form a number to be "selected". For instance:
+somewhat specific functions. An AND operator serves as a mask, allowing specific
+bits from a number to be "selected". For instance:
 
 ```
 IN        = 0b010100111
@@ -84,7 +84,7 @@ IN | SETBITS = 0b00100001
 
 To unset bits, a combination and & and ~ can be used.
 
-Additioanlly, there are the left shift`(<<)` and right shift`(<<)` operators, 
+Additionally, there are the left shift`(<<)` and right shift`(<<)` operators, 
 which "move" the number over a set number of bits and fill the rest of zeroes.
 For example:
 
@@ -93,7 +93,7 @@ For example:
 0b1010011 >> 4 = 0b101
 ```
 
-# Recipies
+# Recipes
 
 **Bit Flag Setting**
 
@@ -102,7 +102,7 @@ IN |= PATTERN << n
 ```
 
 Where `IN` is an input variable, `PATTERN` is the pattern that need to get set,
-and `n` is the nbumber of bits into the input where the pattern should get set.
+and `n` is the number of bits into the input where the pattern should get set.
 For instance:
 
 ```
@@ -146,7 +146,7 @@ IN &= ~(0b111 << 4)
 OUT = IN & MASK
 ```
 
-For exmaple, to read the 3 msot significant bits from `0b0101100`, we'd use
+For example, to read the 3 most significant bits from `0b0101100`, we'd use
 
 ```
 OUT = IN & 0b1110000
@@ -156,7 +156,7 @@ OUT = IN & 0b111 << 4
 ```
 However the issue here is that the extracted bits will still be in their
 original columns, and thus will be as large as the originals. To remedy this, we
-can right shift byt the number of bits to make the LSB of the masked output to
+can right shift by the number of bits to make the LSB of the masked output to
 be in the 2^0 place.
 
 ```
@@ -169,11 +169,11 @@ OUT = (IN & 0b1110000) >> n
 ```
 
 Thus, the easiest way to set a number of bits that might contains ones to a
-custom patters is to first *clear* thos bits, then *set* using the OR operator. 
+custom patters is to first *clear* those bits, then *set* using the OR operator. 
 
 **Toggling**
 
-Finally, toggling is pretty similar tot eh other two, except we use the Xor
+Finally, toggling is pretty similar to the other two, except we use the Xor
 operator instead of OR or AND:
 
 ```
