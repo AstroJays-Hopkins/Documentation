@@ -13,7 +13,7 @@ ID: 2M
 
 ## Template
 Copy and paste the following into a markdown file, edit out the placeholders,
-and remove uneeded portions.
+and remove unneeded portions.
 
 
 ````
@@ -21,7 +21,7 @@ and remove uneeded portions.
 Version: [version]  
 Date: [Date]  
 Status: [status]  
-Type: System Sepcification  
+Type: System Specification  
 ID: [ID]  
 
 ## Overview

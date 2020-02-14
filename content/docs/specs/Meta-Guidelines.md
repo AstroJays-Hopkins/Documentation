@@ -33,7 +33,7 @@ contain the following fields:
 
 1. Version: Following [semver](https://semver.org/) specifications
 2. Date: Indicating the date that the specification was last updated
-3. Status: Indicating where the specification lies alsong the specification
+3. Status: Indicating where the specification lies along the specification
    lifecycle
 4. Type: Describing what type of document it is. Must be one of the following
    values:
@@ -44,8 +44,8 @@ contain the following fields:
 5. ID: A unique number assigned to each spec when it reaches draft
    status that serves as an official alias.
 
-When creating the header, each line should ahve two space characters (`  `) to
-force a new line betweem each item.
+When creating the header, each line should have two space characters (`  `) to
+force a new line between each item.
 
 ### Example title and header
 ```markdown
@@ -55,8 +55,8 @@ Date: 20 September 2019
 Status: Draft  
 Type: Meta-Specification  
 ```
-## Overview/Desciption
-This section shall contain a short description of the thing covered byt hte
+## Overview/Description
+This section shall contain a short description of the thing covered by the
 specification, as well as a brief overview specification conditions.
 
 ## Requirements
