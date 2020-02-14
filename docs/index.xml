@@ -1,12 +1,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Astrojays Rocketry – Documentation</title>
-    <link>/docs/</link>
+    <link>/Documentation/docs/</link>
     <description>Recent content in Documentation on Astrojays Rocketry</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	  <atom:link href="/docs/index.xml" rel="self" type="application/rss+xml" />
+	  <atom:link href="/Documentation/docs/index.xml" rel="self" type="application/rss+xml" />
     
     
       
@@ -16,10 +16,10 @@
     
     <item>
       <title>Docs: Bit Manipulations</title>
-      <link>/docs/guides/guide-bits/</link>
+      <link>/Documentation/docs/guides/guide-bits/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/docs/guides/guide-bits/</guid>
+      <guid>/Documentation/docs/guides/guide-bits/</guid>
       <description>
         
         
@@ -226,10 +226,10 @@ operator instead of OR or AND:&lt;/p&gt;
     
     <item>
       <title>Docs: General</title>
-      <link>/docs/specs/prop-avionics/spec-system/</link>
+      <link>/Documentation/docs/specs/prop-avionics/spec-system/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/docs/specs/prop-avionics/spec-system/</guid>
+      <guid>/Documentation/docs/specs/prop-avionics/spec-system/</guid>
       <description>
         
         
@@ -299,10 +299,10 @@ treatment of this component.&lt;/p&gt;
     
     <item>
       <title>Docs: Specification Guidelines</title>
-      <link>/docs/specs/meta-guidelines/</link>
+      <link>/Documentation/docs/specs/meta-guidelines/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/docs/specs/meta-guidelines/</guid>
+      <guid>/Documentation/docs/specs/meta-guidelines/</guid>
       <description>
         
         
@@ -366,10 +366,10 @@ specifications&amp;rdquo;&lt;/p&gt;
     
     <item>
       <title>Docs: Specification Keywords</title>
-      <link>/docs/specs/meta-keywords/</link>
+      <link>/Documentation/docs/specs/meta-keywords/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/docs/specs/meta-keywords/</guid>
+      <guid>/Documentation/docs/specs/meta-keywords/</guid>
       <description>
         
         
@@ -405,10 +405,10 @@ prohibition of the specification.&lt;/li&gt;
     
     <item>
       <title>Docs: Specification Template</title>
-      <link>/docs/specs/meta-template/</link>
+      <link>/Documentation/docs/specs/meta-template/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/docs/specs/meta-template/</guid>
+      <guid>/Documentation/docs/specs/meta-template/</guid>
       <description>
         
         
@@ -468,10 +468,10 @@ syntax highlighting will be automatically applied.
     
     <item>
       <title>Docs: Control Plane</title>
-      <link>/docs/specs/prop-avionics/spec-control-plane/</link>
+      <link>/Documentation/docs/specs/prop-avionics/spec-control-plane/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/docs/specs/prop-avionics/spec-control-plane/</guid>
+      <guid>/Documentation/docs/specs/prop-avionics/spec-control-plane/</guid>
       <description>
         
         
@@ -873,10 +873,10 @@ valve.&lt;/li&gt;
     
     <item>
       <title>Docs: </title>
-      <link>/docs/spec-dartplot/</link>
+      <link>/Documentation/docs/spec-dartplot/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/docs/spec-dartplot/</guid>
+      <guid>/Documentation/docs/spec-dartplot/</guid>
       <description>
         
         
