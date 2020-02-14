@@ -1,0 +1,201 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Astrojays Rocketry – Specifications</title>
+    <link>/docs/specs/</link>
+    <description>Recent content in Specifications on Astrojays Rocketry</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	  <atom:link href="/docs/specs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Docs: Specification Guidelines</title>
+      <link>/docs/specs/meta-guidelines/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/meta-guidelines/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.0.1&lt;br&gt;
+Date: 29 September 2019&lt;br&gt;
+Status: Draft&lt;br&gt;
+Type: Meta-Specification&lt;br&gt;
+ID: 0M&lt;/p&gt;
+&lt;h2 id=&#34;description&#34;&gt;Description&lt;/h2&gt;
+&lt;p&gt;All specifications must have the following components:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Title&lt;/li&gt;
+&lt;li&gt;Header&lt;/li&gt;
+&lt;li&gt;Description or Overview section&lt;/li&gt;
+&lt;li&gt;Requirements section&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;and may also contain a &amp;ldquo;Components&amp;rdquo; and &amp;ldquo;Implementation&amp;rdquo; section as deemed
+necessary. Specifications must be written in markdown or asciidoc syntax, to
+ensure that the plaintext is equally readable.&lt;/p&gt;
+&lt;h2 id=&#34;title-and-header&#34;&gt;Title and Header&lt;/h2&gt;
+&lt;p&gt;The title should be a concise description of what the specification covers. All
+titles for specifications must be unique to prevent confusion.&lt;/p&gt;
+&lt;p&gt;The header serves as the &amp;ldquo;metadata&amp;rdquo; for the specification and should only
+contain the following fields:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Version: Following &lt;a href=&#34;https://semver.org/&#34;&gt;semver&lt;/a&gt; specifications&lt;/li&gt;
+&lt;li&gt;Date: Indicating the date that the specification was last updated&lt;/li&gt;
+&lt;li&gt;Status: Indicating where the specification lies along the specification
+lifecycle&lt;/li&gt;
+&lt;li&gt;Type: Describing what type of document it is. Must be one of the following
+values:
+&lt;ol&gt;
+&lt;li&gt;&amp;ldquo;Specification&amp;rdquo;: Engineering specifications for systems, formats, and
+components&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Meta-Specification&amp;rdquo;: Specifications about specifications are
+specification lifecycle and usage.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;ID: A unique number assigned to each spec when it reaches draft
+status that serves as an official alias.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;When creating the header, each line should have two space characters (&lt;code&gt;  &lt;/code&gt;) to
+force a new line between each item.&lt;/p&gt;
+&lt;h3 id=&#34;example-title-and-header&#34;&gt;Example title and header&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;# B System Specifications
+&lt;/span&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;&lt;/span&gt;Version: 0.1.1  
+Date: 20 September 2019  
+Status: Draft  
+Type: Meta-Specification  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;overviewdescription&#34;&gt;Overview/Description&lt;/h2&gt;
+&lt;p&gt;This section shall contain a short description of the thing covered by the
+specification, as well as a brief overview specification conditions.&lt;/p&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+&lt;p&gt;This section shall list each requirement of an implementation that is &lt;em&gt;in spec&lt;/em&gt;
+Each item listed here must be verified before the system is declared complete.
+Definitions written here shall follow meta-spec 1M &amp;ldquo;Keywords for use in
+specifications&amp;rdquo;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Specification Keywords</title>
+      <link>/docs/specs/meta-keywords/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/meta-keywords/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version 1.0.0&lt;br&gt;
+Date: 29 September 2019&lt;br&gt;
+Status: Current&lt;br&gt;
+Type: Meta Specification&lt;br&gt;
+ID: 1M
+&lt;em&gt;based on &lt;a href=&#34;https://www.ietf.org/rfc/rfc2119.txt&#34;&gt;rfc2119&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The following keywords shall carry special meaning when used within a
+specification:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;SHALL: This word, and the words &amp;ldquo;REQUIRED&amp;rdquo; and &amp;ldquo;MUST&amp;rdquo;, mean that the
+definition is an absolute requirement of the specification. Implementations
+that fail to comply with one of these directives are &lt;em&gt;always out of spec&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;SHALL NOT: This phrase and the phrase &amp;ldquo;MUST NOT&amp;rdquo; mean an absolute
+prohibition of the specification.&lt;/li&gt;
+&lt;li&gt;SHOULD: This word, or the word &amp;ldquo;RECOMMENDED&amp;rdquo;, mean that the definition is a
+strong recommendation of the specification that should be followed
+in the absence of a valid reason to diverge. Team members should seek advice
+from the subsystem lead before disregarding these directives. Divergences
+with &lt;em&gt;documented justifications&lt;/em&gt; are &lt;em&gt;within spec&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;SHOULD NOT: This phrase means a strong discouragement of the specification.&lt;/li&gt;
+&lt;li&gt;MAY: This word means that the definition is &lt;em&gt;completely optional&lt;/em&gt;
+recommendation of the specification and may be disregarded at will.
+Divergences are &lt;em&gt;always within spec&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;MAY NOT: This words means that the directive is a completely optional
+prohibition of the specification.&lt;/li&gt;
+&lt;/ol&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Specification Template</title>
+      <link>/docs/specs/meta-template/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/meta-template/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.1.0&lt;br&gt;
+Date: 29 September 2019&lt;br&gt;
+Status: Provisional Document&lt;br&gt;
+Type: Meta Specification&lt;br&gt;
+ID: 2M&lt;/p&gt;
+&lt;h2 id=&#34;template&#34;&gt;Template&lt;/h2&gt;
+&lt;p&gt;Copy and paste the following into a markdown file, edit out the placeholders,
+and remove unneeded portions.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Specifications for [system]
+Version: [version]  
+Date: [Date]  
+Status: [status]  
+Type: System Specification  
+ID: [ID]  
+
+## Overview
+[Required Section]
+This *word* is italicized. This **word** is bold.
+
+## Goals
+[Optional Section]
+
+## Requirements
+[Required Section]
+1. This
+2. is
+3. an
+4. ordered
+5. list.
+
+## Out of scope
+[Optional Section]
+- This
+- is
+- an
+- unordered
+- list.
+
+## Componenets
+[Optional Section]
+```
+this is a prmformatted code block
+syntax highlighting will be automatically applied.
+```
+
+## Implementation
+[Optional section]
+
+## See also
+[Optional section]
+&lt;/code&gt;&lt;/pre&gt;
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Specifications for Propulsion Avionics</title>
+      <link>/docs/specs/prop-avionics/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/prop-avionics/</guid>
+      <description>
+        
+        
+        &lt;p&gt;PLACEHOLDER&lt;/p&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,496 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Astrojays Rocketry – Specifications for Propulsion Avionics</title>
+    <link>/docs/specs/prop-avionics/</link>
+    <description>Recent content in Specifications for Propulsion Avionics on Astrojays Rocketry</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	  <atom:link href="/docs/specs/prop-avionics/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Docs: General</title>
+      <link>/docs/specs/prop-avionics/spec-system/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/prop-avionics/spec-system/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.1.0&lt;br&gt;
+Date: 19 October 2019&lt;br&gt;
+Status: Draft&lt;br&gt;
+Type: System Specification&lt;/p&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Propulsion Avionics shall be avionics systems that control and instrument
+the BJ-01 rocket engine during test runs (CFTs and hot fires) and full flights.
+This system is &lt;strong&gt;safety critical&lt;/strong&gt;, and any changes shall be integration tested
+with propulsion components before flying.&lt;/p&gt;
+&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Minimize risk to anyone involved in propulsion system operations&lt;/li&gt;
+&lt;li&gt;Ensure reliable ignition and operation of the BJ-01 rocket engine&lt;/li&gt;
+&lt;li&gt;Collect propulsion system metrics for analysis&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Accept and log instrumentation data&lt;/li&gt;
+&lt;li&gt;Initiate and monitor ignition process for the rocket engine&lt;/li&gt;
+&lt;li&gt;Monitor instrumentation and alert operator(s) in case of malfunction and/or
+automatically act to minimize safety risk.&lt;/li&gt;
+&lt;li&gt;Respond automatically to failures to minimize safety risk&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;out-of-scope&#34;&gt;Out of scope&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Rocket operations after engine burn has completed (this is the domain of
+&lt;em&gt;recovery avionics&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;Rocket operations before oxidizer fueling (this is the domain of the
+ground support hardware)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;components&#34;&gt;Components:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Data Acquisition Plane (DAP): Tasked with receiving and logging data from engine
+instrumentation&lt;/li&gt;
+&lt;li&gt;Command &amp;amp; Control Plane (C2P): Tasked with receiving operator commands and
+sending the appropriate control signals to the engine (oxidizer valve and
+fueling solenoids). Also tasked with automatically responding to real-time data
+received from the DAQ.&lt;/li&gt;
+&lt;li&gt;Data Transmission and Visualization plane (DTP): Tasked with transmitting data
+to the operator console. Must also visualize telemetry data easing identification
+of error conditions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;data-acquisition-plane&#34;&gt;Data Acquisition Plane&lt;/h3&gt;
+&lt;p&gt;The data acquisition plane shall read and track the state of the following engine
+components:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Thermocouples (TCs)&lt;/li&gt;
+&lt;li&gt;Pressure transducers (PTs)&lt;/li&gt;
+&lt;li&gt;Load cells (LCs)&lt;/li&gt;
+&lt;li&gt;Solenoids&lt;/li&gt;
+&lt;li&gt;Motorized valve&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;and log the output to a csv log at a sample rate of __ seconds. The log shall
+consist of one line per sample and &lt;code&gt;E_[sensor]&lt;/code&gt; for any data collection
+errors. The log for each run shall be called &lt;code&gt;log_[time]&lt;/code&gt; where&lt;code&gt; [time]&lt;/code&gt; is the
+Unix timestamp. The DAQ shall also provide the DTP and C2P with updated data
+in every sample interval.&lt;/p&gt;
+&lt;h3 id=&#34;command-and-control-plane&#34;&gt;Command and Control Plane&lt;/h3&gt;
+&lt;p&gt;See &lt;a href=&#34;Spec-Prop-Avionics-Control-Plane.md&#34;&gt;the specification&lt;/a&gt; for a detailed
+treatment of this component.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Control Plane</title>
+      <link>/docs/specs/prop-avionics/spec-control-plane/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/prop-avionics/spec-control-plane/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.5.1&lt;br&gt;
+Date: 28 October 2019&lt;br&gt;
+Status: Draft&lt;br&gt;
+Type: Component Specification&lt;/p&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;The command and control (C2) plane is responsible for communicating with
+onboard systems such as the engine, and ensure they remain responsive and under
+operator control at all times. Control signals shall be transmitted over 915Mhz
+LoRa radio&lt;/p&gt;
+&lt;h2 id=&#34;i2c-protocol&#34;&gt;I2C Protocol&lt;/h2&gt;
+&lt;p&gt;I2C shall be used as the inter-board communication method of choice between the
+custom controllers in this system. The I2C protocol should follow the following&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Device IDs&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Address&lt;/th&gt;
+&lt;th&gt;Device&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;Engine Controller&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;Ground Valve Controller&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;48&lt;/td&gt;
+&lt;td&gt;ADC (for PTs)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;To get the current EC state, request a single byte over I2C.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;EC State packet&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Bit 7&lt;/th&gt;
+&lt;th&gt;Bit 6&lt;/th&gt;
+&lt;th&gt;Bit 5&lt;/th&gt;
+&lt;th&gt;Bit 4&lt;/th&gt;
+&lt;th&gt;Bit 3&lt;/th&gt;
+&lt;th&gt;Bit 2&lt;/th&gt;
+&lt;th&gt;Bit 1&lt;/th&gt;
+&lt;th&gt;Bit 0&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;Req MV-G1 State&lt;/td&gt;
+&lt;td&gt;eMatch&lt;/td&gt;
+&lt;td&gt;MV-R1&lt;/td&gt;
+&lt;td&gt;MV-R1 moving&lt;/td&gt;
+&lt;td&gt;MV-S1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The EC will accept the following single byte write to set modifiable state&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;EC Command Packet&lt;/strong&gt;a&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Bit 7&lt;/th&gt;
+&lt;th&gt;Bit 6&lt;/th&gt;
+&lt;th&gt;Bit 5&lt;/th&gt;
+&lt;th&gt;Bit 4&lt;/th&gt;
+&lt;th&gt;Bit 3&lt;/th&gt;
+&lt;th&gt;Bit 2&lt;/th&gt;
+&lt;th&gt;Bit 1&lt;/th&gt;
+&lt;th&gt;Bit 0&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;Vent&lt;/td&gt;
+&lt;td&gt;Vent&lt;/td&gt;
+&lt;td&gt;E Shutdown&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;Vent is a two bit number to contain all of its states, with MSB at Bit 2 and
+LSB at bit 1.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Since the PI serves as the bus master, it should check the &lt;code&gt;Requested MV-G1 State&lt;/code&gt; and compare it to the last one sent to the Ground valve controller. If it
+is different it should construct a single byte command packet with value &lt;code&gt;1&lt;/code&gt; and
+sent it to the Ground valve Controller.&lt;/p&gt;
+&lt;h2 id=&#34;radio-protocol&#34;&gt;Radio protocol&lt;/h2&gt;
+&lt;p&gt;The Ground Station, Relay Box and Ignition computer shall all implement the C2
+over 915Mhz LoRa radio. Each packet sent over the LoRa network shall follow the
+following format:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Byte&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;Sender/Receiver ID byte&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Packet Type&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&amp;hellip;n&lt;/td&gt;
+&lt;td&gt;Packet Payload&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Bytes 0-1 are considered the &amp;ldquo;header&amp;rdquo; of the packet and primarily serve as
+metadata that allow receivers to choose how to handle packets with minimal
+overhead.&lt;/p&gt;
+&lt;p&gt;The sender/receiver ID shall be an 8 bit integer (uint8_t) with the high 4 bits
+representing the sender ID and the low 4 bits representing the receiver ID. That
+is:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;0b11110000 will be split into
+Sender ID = 0b1111 = 15
+Receiver ID = 0b0000 = 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;These IDs must follow the table below:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;C2 Plane Component&lt;/th&gt;
+&lt;th&gt;ID&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Ground Station&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ignition (Engine) Computer&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Relay Box Controller&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Broadcast&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;15&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;NOTE: ID #15 is reserved for broadcast messages sent to all radio devices on the
+same network and thus the maximum devices that can be connected to the
+same network as of this spec is 15.&lt;/p&gt;
+&lt;p&gt;Thus, if the Ground Station were to send a packet to the Ignition Computer, it
+would send 0b00000001 in the 1 byte of its radio packet. This also means that
+the sender of a packet can be determined by parsing byte 1 of the packet.&lt;/p&gt;
+&lt;p&gt;Packet types must be one of the following:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Type&lt;/th&gt;
+&lt;th&gt;Code&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;NOOP (does nothing)&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GS State Command&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Heartbeat Request&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ACK&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;NACK&lt;/td&gt;
+&lt;td&gt;101&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;synchronization-and-acknowledgemen&#34;&gt;Synchronization and Acknowledgemen&lt;/h3&gt;
+&lt;p&gt;The C2 plane uses an &lt;em&gt;acked&lt;/em&gt; radio protocol. This means that every command sent
+from the Grand Station to the rocket must be acknowledged by a corresponding
+packet from the rocket to be considered successfully transmitted. However, since
+only the newest state of the ground station needs to be carried out by the
+rocket, only the &lt;em&gt;latest command packet&lt;/em&gt; will need to be acked.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;repeat forever:
+    if button state changed from last transmitted state:
+        record state of GS
+        assign sequence code to state so ack can be track
+        replace current state pending ack
+        send state to rocket
+    otherwise:
+       if state transmission is pending ack
+             check for ack with matching sequence number from rocket, if received, mark state as acked
+             if no response, and time is over ack timeout:
+                 resend only if there are retries left, otherwise light up transmission error led
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Heartbeat Request Packet Format:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Byte&lt;/th&gt;
+&lt;th&gt;Content&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0-1&lt;/td&gt;
+&lt;td&gt;HEADER&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Sequence Code&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;ACK Packet Format:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Byte&lt;/th&gt;
+&lt;th&gt;Content&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0-1&lt;/td&gt;
+&lt;td&gt;HEADER&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Sequence Code&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The sequence code is a pseudo-unique code that matches request packets with
+their corresponding ACK packets. Sequence codes should be incremented after
+every ack&amp;rsquo;d packet transmission and should roll over at 256 (uint8_t will do
+this automatically).  All ack&amp;rsquo;d packets transmitted from the same node should
+use and increment the same sequence node counter to ensure that all packets
+transmitted in a short time window from the node have different sequence codes.
+Packets that require acknowledgement should include a sequence code so the
+resulting ack can be tracked back to the originating request.&lt;/p&gt;
+&lt;h3 id=&#34;valve-control&#34;&gt;Valve Control&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Valve Control Packet&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Byte&lt;/th&gt;
+&lt;th&gt;Content&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0-1&lt;/td&gt;
+&lt;td&gt;HEADER&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Sequence Code&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Ball Valve State&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Vent State&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;Fuel Valve State&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The ignition computer receives valve control commands from the
+operator. Corresponding control signals are then sent to the propulsion system.
+Radio commands for each valve shall be represented by an integer value, should
+be of the &lt;code&gt;int8_t&lt;/code&gt; type. As there are 3 valves, a radio command shall be an
+array containing 3 integers of the following order:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open/Close of fuel-combustion ball valve&lt;/li&gt;
+&lt;li&gt;Open/Close of fueling solenoid valve&lt;/li&gt;
+&lt;li&gt;Open/Close of venting solenoid valve&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The commands values used by each of the command is outlined in the following
+tables. &lt;em&gt;Note&lt;/em&gt;, the values here are only used at software level, whilst the
+actual signals sent to &lt;strong&gt;hardware components&lt;/strong&gt; need to be defined based on the
+particular needs.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Ball valve control&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;value&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;Standby signal that does not lead to any change in current valve action.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Reversed movement of the valve.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Forward movement of the valve.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;255&lt;/td&gt;
+&lt;td&gt;signal for &lt;strong&gt;Ignition&lt;/strong&gt; Sequence, including opening the valve for a preset amount of time, before closing.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Venting solenoid valve control&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;value&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;Standby Signal, with no change in current valve action&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Closing&lt;/strong&gt; of the venting valve&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Opening&lt;/strong&gt; of the venting valve&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Fuel solenoid valve control&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;value&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;Standby Signal, with no change in current valve action&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Closing&lt;/strong&gt; of the Fuel valve&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Opening&lt;/strong&gt; of the Fuel valve&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;One example of a command would be &lt;code&gt;{1,-1,0}&lt;/code&gt;, denoting the unlikely command of
+forward action of ball valve, no change in action of venting valve, and the
+closing of fuel valve. For future expansion of the commands, it is recommended
+that any simple command should obtain a value ascending from 1, whilst complex
+sequence command should obtain a value descending from 127. For the valves used,
+Simple and sequence commands are defined as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Simple command is a command that is accomplished by #one# #continuous# and
+#unidirectional# action of the valve.&lt;/li&gt;
+&lt;li&gt;Sequence commands is a command that is accomplished by #multiple#
+#discontinuous(e.g. with intervals)# and/or #multidirectional# action of the
+valve.&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

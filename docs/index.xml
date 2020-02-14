@@ -1,0 +1,917 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Astrojays Rocketry – Documentation</title>
+    <link>/docs/</link>
+    <description>Recent content in Documentation on Astrojays Rocketry</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	  <atom:link href="/docs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Docs: Bit Manipulations</title>
+      <link>/docs/guides/guide-bits/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/guides/guide-bits/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.1.0&lt;br&gt;
+Date: 28 October 2019&lt;br&gt;
+Status: Draft&lt;br&gt;
+Type: Guide&lt;br&gt;
+ID: 3G&lt;/p&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Data can be packed more compactly than even the smallest primitive type allow by
+manipulating the individual bytes of the numbers. For example, an 8 bit unsigned
+integer (&lt;code&gt;uint8_t&lt;/code&gt;) can contain the number from 0-255, 8 boolean flags, 4 two
+bit numbers (0-3), a combination of 3-bit numbers (0-8) and two bit number, 2
+4-bit numbers (0-15), or any combination of these. In general, the smallest
+on-wire primitive type in modern programming languages are at least 8 bits wide,
+even boolean type which can only hold two states. In a bandwidth constrained
+application like long-distance radio signaling, every bit matters, and thus Bit
+manipulation become a handy method to pack more data in much less space.&lt;/p&gt;
+&lt;h2 id=&#34;basic-operations&#34;&gt;Basic Operations&lt;/h2&gt;
+&lt;p&gt;To manipulate numerical data types at the bit level, we must resort to binary
+operators such as AND(&amp;amp;), OR(|), XOR(|), and NOT(~). These follow the following
+truth tables (A,B are inputs, Y is the output):&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOT&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Y&lt;/th&gt;
+&lt;th&gt;A&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;AND&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Y&lt;/th&gt;
+&lt;th&gt;A&lt;/th&gt;
+&lt;th&gt;B&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;OR&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Y&lt;/th&gt;
+&lt;th&gt;A&lt;/th&gt;
+&lt;th&gt;B&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;XOR&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Y&lt;/th&gt;
+&lt;th&gt;A&lt;/th&gt;
+&lt;th&gt;B&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;These operations can be used formally to do boolean algebra. However, from a
+practical perspective, for data packing purposes, each of these operator have
+somewhat specific functions. An AND operator serves as a mask, allowing specific
+bits from a number to be &amp;ldquo;selected&amp;rdquo;. For instance:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN        = 0b010100111
+MASK      = 0b000010100 # &amp;quot;selecting&amp;quot; bits 5 and 3
+IN &amp;amp; MASK = 0b000000100
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And the OR operator can be used to &amp;ldquo;set&amp;rdquo; bits&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN           = 0b00100000
+SETBITS      = 0b00100001
+IN | SETBITS = 0b00100001
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To unset bits, a combination and &amp;amp; and ~ can be used.&lt;/p&gt;
+&lt;p&gt;Additionally, there are the left shift&lt;code&gt;(&amp;lt;&amp;lt;)&lt;/code&gt; and right shift&lt;code&gt;(&amp;lt;&amp;lt;)&lt;/code&gt; operators,
+which &amp;ldquo;move&amp;rdquo; the number over a set number of bits and fill the rest of zeroes.
+For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;0b00011 &amp;lt;&amp;lt; 3 = 0b00011000
+0b1010011 &amp;gt;&amp;gt; 4 = 0b101
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;recipes&#34;&gt;Recipes&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Bit Flag Setting&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN |= PATTERN &amp;lt;&amp;lt; n
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Where &lt;code&gt;IN&lt;/code&gt; is an input variable, &lt;code&gt;PATTERN&lt;/code&gt; is the pattern that need to get set,
+and &lt;code&gt;n&lt;/code&gt; is the number of bits into the input where the pattern should get set.
+For instance:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN = 0b000110011
+        ~^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;and we want to set the two underlined bits to 111, we&amp;rsquo;d do&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN |= 0b11 &amp;lt;&amp;lt; 6
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It is important to note that his can only set bits, if a bit is already one it
+cannot be converted to a zero.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Bit Flag Clearing&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To clear bits, we follow the following recipe&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN &amp;amp;= ~(PATTERN &amp;lt;&amp;lt; n)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN = 0b0001010011
+          ~~^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;and we want to clear the three underlined bits (set them back to zero), we&amp;rsquo;d use&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN &amp;amp;= ~(0b111 &amp;lt;&amp;lt; 4)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;Reading bits&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;OUT = IN &amp;amp; MASK
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example, to read the 3 most significant bits from &lt;code&gt;0b0101100&lt;/code&gt;, we&amp;rsquo;d use&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;OUT = IN &amp;amp; 0b1110000
+# or
+OUT = IN &amp;amp; 0b111 &amp;lt;&amp;lt; 4
+# OUT = 0b0100000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;However the issue here is that the extracted bits will still be in their
+original columns, and thus will be as large as the originals. To remedy this, we
+can right shift by the number of bits to make the LSB of the masked output to
+be in the 2^0 place.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;OUT = (IN &amp;amp; MASK) &amp;gt;&amp;gt; n
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;OUT = (IN &amp;amp; 0b1110000) &amp;gt;&amp;gt; n
+# out = 0b010
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thus, the easiest way to set a number of bits that might contains ones to a
+custom patters is to first &lt;em&gt;clear&lt;/em&gt; those bits, then &lt;em&gt;set&lt;/em&gt; using the OR operator.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Toggling&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Finally, toggling is pretty similar to the other two, except we use the Xor
+operator instead of OR or AND:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN ^= (PATTERN &amp;lt;&amp;lt; n)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN = 0b00110011
+       ~~^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To toggle the three underlined bytes, we&amp;rsquo;d use:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN ^= (0b111 &amp;lt;&amp;lt; 5)
+# IN = 0b11010011
+&lt;/code&gt;&lt;/pre&gt;
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: General</title>
+      <link>/docs/specs/prop-avionics/spec-system/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/prop-avionics/spec-system/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.1.0&lt;br&gt;
+Date: 19 October 2019&lt;br&gt;
+Status: Draft&lt;br&gt;
+Type: System Specification&lt;/p&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Propulsion Avionics shall be avionics systems that control and instrument
+the BJ-01 rocket engine during test runs (CFTs and hot fires) and full flights.
+This system is &lt;strong&gt;safety critical&lt;/strong&gt;, and any changes shall be integration tested
+with propulsion components before flying.&lt;/p&gt;
+&lt;h2 id=&#34;goals&#34;&gt;Goals&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Minimize risk to anyone involved in propulsion system operations&lt;/li&gt;
+&lt;li&gt;Ensure reliable ignition and operation of the BJ-01 rocket engine&lt;/li&gt;
+&lt;li&gt;Collect propulsion system metrics for analysis&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Accept and log instrumentation data&lt;/li&gt;
+&lt;li&gt;Initiate and monitor ignition process for the rocket engine&lt;/li&gt;
+&lt;li&gt;Monitor instrumentation and alert operator(s) in case of malfunction and/or
+automatically act to minimize safety risk.&lt;/li&gt;
+&lt;li&gt;Respond automatically to failures to minimize safety risk&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;out-of-scope&#34;&gt;Out of scope&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Rocket operations after engine burn has completed (this is the domain of
+&lt;em&gt;recovery avionics&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;Rocket operations before oxidizer fueling (this is the domain of the
+ground support hardware)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&#34;components&#34;&gt;Components:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Data Acquisition Plane (DAP): Tasked with receiving and logging data from engine
+instrumentation&lt;/li&gt;
+&lt;li&gt;Command &amp;amp; Control Plane (C2P): Tasked with receiving operator commands and
+sending the appropriate control signals to the engine (oxidizer valve and
+fueling solenoids). Also tasked with automatically responding to real-time data
+received from the DAQ.&lt;/li&gt;
+&lt;li&gt;Data Transmission and Visualization plane (DTP): Tasked with transmitting data
+to the operator console. Must also visualize telemetry data easing identification
+of error conditions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;data-acquisition-plane&#34;&gt;Data Acquisition Plane&lt;/h3&gt;
+&lt;p&gt;The data acquisition plane shall read and track the state of the following engine
+components:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Thermocouples (TCs)&lt;/li&gt;
+&lt;li&gt;Pressure transducers (PTs)&lt;/li&gt;
+&lt;li&gt;Load cells (LCs)&lt;/li&gt;
+&lt;li&gt;Solenoids&lt;/li&gt;
+&lt;li&gt;Motorized valve&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;and log the output to a csv log at a sample rate of __ seconds. The log shall
+consist of one line per sample and &lt;code&gt;E_[sensor]&lt;/code&gt; for any data collection
+errors. The log for each run shall be called &lt;code&gt;log_[time]&lt;/code&gt; where&lt;code&gt; [time]&lt;/code&gt; is the
+Unix timestamp. The DAQ shall also provide the DTP and C2P with updated data
+in every sample interval.&lt;/p&gt;
+&lt;h3 id=&#34;command-and-control-plane&#34;&gt;Command and Control Plane&lt;/h3&gt;
+&lt;p&gt;See &lt;a href=&#34;Spec-Prop-Avionics-Control-Plane.md&#34;&gt;the specification&lt;/a&gt; for a detailed
+treatment of this component.&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Specification Guidelines</title>
+      <link>/docs/specs/meta-guidelines/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/meta-guidelines/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.0.1&lt;br&gt;
+Date: 29 September 2019&lt;br&gt;
+Status: Draft&lt;br&gt;
+Type: Meta-Specification&lt;br&gt;
+ID: 0M&lt;/p&gt;
+&lt;h2 id=&#34;description&#34;&gt;Description&lt;/h2&gt;
+&lt;p&gt;All specifications must have the following components:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Title&lt;/li&gt;
+&lt;li&gt;Header&lt;/li&gt;
+&lt;li&gt;Description or Overview section&lt;/li&gt;
+&lt;li&gt;Requirements section&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;and may also contain a &amp;ldquo;Components&amp;rdquo; and &amp;ldquo;Implementation&amp;rdquo; section as deemed
+necessary. Specifications must be written in markdown or asciidoc syntax, to
+ensure that the plaintext is equally readable.&lt;/p&gt;
+&lt;h2 id=&#34;title-and-header&#34;&gt;Title and Header&lt;/h2&gt;
+&lt;p&gt;The title should be a concise description of what the specification covers. All
+titles for specifications must be unique to prevent confusion.&lt;/p&gt;
+&lt;p&gt;The header serves as the &amp;ldquo;metadata&amp;rdquo; for the specification and should only
+contain the following fields:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Version: Following &lt;a href=&#34;https://semver.org/&#34;&gt;semver&lt;/a&gt; specifications&lt;/li&gt;
+&lt;li&gt;Date: Indicating the date that the specification was last updated&lt;/li&gt;
+&lt;li&gt;Status: Indicating where the specification lies along the specification
+lifecycle&lt;/li&gt;
+&lt;li&gt;Type: Describing what type of document it is. Must be one of the following
+values:
+&lt;ol&gt;
+&lt;li&gt;&amp;ldquo;Specification&amp;rdquo;: Engineering specifications for systems, formats, and
+components&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Meta-Specification&amp;rdquo;: Specifications about specifications are
+specification lifecycle and usage.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;ID: A unique number assigned to each spec when it reaches draft
+status that serves as an official alias.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;When creating the header, each line should have two space characters (&lt;code&gt;  &lt;/code&gt;) to
+force a new line between each item.&lt;/p&gt;
+&lt;h3 id=&#34;example-title-and-header&#34;&gt;Example title and header&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-markdown&#34; data-lang=&#34;markdown&#34;&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;# B System Specifications
+&lt;/span&gt;&lt;span style=&#34;color:#000080;font-weight:bold&#34;&gt;&lt;/span&gt;Version: 0.1.1  
+Date: 20 September 2019  
+Status: Draft  
+Type: Meta-Specification  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;overviewdescription&#34;&gt;Overview/Description&lt;/h2&gt;
+&lt;p&gt;This section shall contain a short description of the thing covered by the
+specification, as well as a brief overview specification conditions.&lt;/p&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+&lt;p&gt;This section shall list each requirement of an implementation that is &lt;em&gt;in spec&lt;/em&gt;
+Each item listed here must be verified before the system is declared complete.
+Definitions written here shall follow meta-spec 1M &amp;ldquo;Keywords for use in
+specifications&amp;rdquo;&lt;/p&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Specification Keywords</title>
+      <link>/docs/specs/meta-keywords/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/meta-keywords/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version 1.0.0&lt;br&gt;
+Date: 29 September 2019&lt;br&gt;
+Status: Current&lt;br&gt;
+Type: Meta Specification&lt;br&gt;
+ID: 1M
+&lt;em&gt;based on &lt;a href=&#34;https://www.ietf.org/rfc/rfc2119.txt&#34;&gt;rfc2119&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The following keywords shall carry special meaning when used within a
+specification:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;SHALL: This word, and the words &amp;ldquo;REQUIRED&amp;rdquo; and &amp;ldquo;MUST&amp;rdquo;, mean that the
+definition is an absolute requirement of the specification. Implementations
+that fail to comply with one of these directives are &lt;em&gt;always out of spec&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;SHALL NOT: This phrase and the phrase &amp;ldquo;MUST NOT&amp;rdquo; mean an absolute
+prohibition of the specification.&lt;/li&gt;
+&lt;li&gt;SHOULD: This word, or the word &amp;ldquo;RECOMMENDED&amp;rdquo;, mean that the definition is a
+strong recommendation of the specification that should be followed
+in the absence of a valid reason to diverge. Team members should seek advice
+from the subsystem lead before disregarding these directives. Divergences
+with &lt;em&gt;documented justifications&lt;/em&gt; are &lt;em&gt;within spec&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;SHOULD NOT: This phrase means a strong discouragement of the specification.&lt;/li&gt;
+&lt;li&gt;MAY: This word means that the definition is &lt;em&gt;completely optional&lt;/em&gt;
+recommendation of the specification and may be disregarded at will.
+Divergences are &lt;em&gt;always within spec&lt;/em&gt;.&lt;/li&gt;
+&lt;li&gt;MAY NOT: This words means that the directive is a completely optional
+prohibition of the specification.&lt;/li&gt;
+&lt;/ol&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Specification Template</title>
+      <link>/docs/specs/meta-template/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/meta-template/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.1.0&lt;br&gt;
+Date: 29 September 2019&lt;br&gt;
+Status: Provisional Document&lt;br&gt;
+Type: Meta Specification&lt;br&gt;
+ID: 2M&lt;/p&gt;
+&lt;h2 id=&#34;template&#34;&gt;Template&lt;/h2&gt;
+&lt;p&gt;Copy and paste the following into a markdown file, edit out the placeholders,
+and remove unneeded portions.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Specifications for [system]
+Version: [version]  
+Date: [Date]  
+Status: [status]  
+Type: System Specification  
+ID: [ID]  
+
+## Overview
+[Required Section]
+This *word* is italicized. This **word** is bold.
+
+## Goals
+[Optional Section]
+
+## Requirements
+[Required Section]
+1. This
+2. is
+3. an
+4. ordered
+5. list.
+
+## Out of scope
+[Optional Section]
+- This
+- is
+- an
+- unordered
+- list.
+
+## Componenets
+[Optional Section]
+```
+this is a prmformatted code block
+syntax highlighting will be automatically applied.
+```
+
+## Implementation
+[Optional section]
+
+## See also
+[Optional section]
+&lt;/code&gt;&lt;/pre&gt;
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: Control Plane</title>
+      <link>/docs/specs/prop-avionics/spec-control-plane/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/specs/prop-avionics/spec-control-plane/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.5.1&lt;br&gt;
+Date: 28 October 2019&lt;br&gt;
+Status: Draft&lt;br&gt;
+Type: Component Specification&lt;/p&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;The command and control (C2) plane is responsible for communicating with
+onboard systems such as the engine, and ensure they remain responsive and under
+operator control at all times. Control signals shall be transmitted over 915Mhz
+LoRa radio&lt;/p&gt;
+&lt;h2 id=&#34;i2c-protocol&#34;&gt;I2C Protocol&lt;/h2&gt;
+&lt;p&gt;I2C shall be used as the inter-board communication method of choice between the
+custom controllers in this system. The I2C protocol should follow the following&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Device IDs&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Address&lt;/th&gt;
+&lt;th&gt;Device&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;Engine Controller&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;11&lt;/td&gt;
+&lt;td&gt;Ground Valve Controller&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;48&lt;/td&gt;
+&lt;td&gt;ADC (for PTs)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;To get the current EC state, request a single byte over I2C.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;EC State packet&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Bit 7&lt;/th&gt;
+&lt;th&gt;Bit 6&lt;/th&gt;
+&lt;th&gt;Bit 5&lt;/th&gt;
+&lt;th&gt;Bit 4&lt;/th&gt;
+&lt;th&gt;Bit 3&lt;/th&gt;
+&lt;th&gt;Bit 2&lt;/th&gt;
+&lt;th&gt;Bit 1&lt;/th&gt;
+&lt;th&gt;Bit 0&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;Req MV-G1 State&lt;/td&gt;
+&lt;td&gt;eMatch&lt;/td&gt;
+&lt;td&gt;MV-R1&lt;/td&gt;
+&lt;td&gt;MV-R1 moving&lt;/td&gt;
+&lt;td&gt;MV-S1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The EC will accept the following single byte write to set modifiable state&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;EC Command Packet&lt;/strong&gt;a&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Bit 7&lt;/th&gt;
+&lt;th&gt;Bit 6&lt;/th&gt;
+&lt;th&gt;Bit 5&lt;/th&gt;
+&lt;th&gt;Bit 4&lt;/th&gt;
+&lt;th&gt;Bit 3&lt;/th&gt;
+&lt;th&gt;Bit 2&lt;/th&gt;
+&lt;th&gt;Bit 1&lt;/th&gt;
+&lt;th&gt;Bit 0&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;null&lt;/td&gt;
+&lt;td&gt;Vent&lt;/td&gt;
+&lt;td&gt;Vent&lt;/td&gt;
+&lt;td&gt;E Shutdown&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;Vent is a two bit number to contain all of its states, with MSB at Bit 2 and
+LSB at bit 1.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Since the PI serves as the bus master, it should check the &lt;code&gt;Requested MV-G1 State&lt;/code&gt; and compare it to the last one sent to the Ground valve controller. If it
+is different it should construct a single byte command packet with value &lt;code&gt;1&lt;/code&gt; and
+sent it to the Ground valve Controller.&lt;/p&gt;
+&lt;h2 id=&#34;radio-protocol&#34;&gt;Radio protocol&lt;/h2&gt;
+&lt;p&gt;The Ground Station, Relay Box and Ignition computer shall all implement the C2
+over 915Mhz LoRa radio. Each packet sent over the LoRa network shall follow the
+following format:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Byte&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;Sender/Receiver ID byte&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Packet Type&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&amp;hellip;n&lt;/td&gt;
+&lt;td&gt;Packet Payload&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Bytes 0-1 are considered the &amp;ldquo;header&amp;rdquo; of the packet and primarily serve as
+metadata that allow receivers to choose how to handle packets with minimal
+overhead.&lt;/p&gt;
+&lt;p&gt;The sender/receiver ID shall be an 8 bit integer (uint8_t) with the high 4 bits
+representing the sender ID and the low 4 bits representing the receiver ID. That
+is:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;0b11110000 will be split into
+Sender ID = 0b1111 = 15
+Receiver ID = 0b0000 = 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;These IDs must follow the table below:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;C2 Plane Component&lt;/th&gt;
+&lt;th&gt;ID&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Ground Station&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Ignition (Engine) Computer&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Relay Box Controller&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Broadcast&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;15&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;NOTE: ID #15 is reserved for broadcast messages sent to all radio devices on the
+same network and thus the maximum devices that can be connected to the
+same network as of this spec is 15.&lt;/p&gt;
+&lt;p&gt;Thus, if the Ground Station were to send a packet to the Ignition Computer, it
+would send 0b00000001 in the 1 byte of its radio packet. This also means that
+the sender of a packet can be determined by parsing byte 1 of the packet.&lt;/p&gt;
+&lt;p&gt;Packet types must be one of the following:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Type&lt;/th&gt;
+&lt;th&gt;Code&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;NOOP (does nothing)&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GS State Command&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Heartbeat Request&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ACK&lt;/td&gt;
+&lt;td&gt;100&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;NACK&lt;/td&gt;
+&lt;td&gt;101&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;synchronization-and-acknowledgemen&#34;&gt;Synchronization and Acknowledgemen&lt;/h3&gt;
+&lt;p&gt;The C2 plane uses an &lt;em&gt;acked&lt;/em&gt; radio protocol. This means that every command sent
+from the Grand Station to the rocket must be acknowledged by a corresponding
+packet from the rocket to be considered successfully transmitted. However, since
+only the newest state of the ground station needs to be carried out by the
+rocket, only the &lt;em&gt;latest command packet&lt;/em&gt; will need to be acked.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;repeat forever:
+    if button state changed from last transmitted state:
+        record state of GS
+        assign sequence code to state so ack can be track
+        replace current state pending ack
+        send state to rocket
+    otherwise:
+       if state transmission is pending ack
+             check for ack with matching sequence number from rocket, if received, mark state as acked
+             if no response, and time is over ack timeout:
+                 resend only if there are retries left, otherwise light up transmission error led
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Heartbeat Request Packet Format:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Byte&lt;/th&gt;
+&lt;th&gt;Content&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0-1&lt;/td&gt;
+&lt;td&gt;HEADER&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Sequence Code&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;ACK Packet Format:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Byte&lt;/th&gt;
+&lt;th&gt;Content&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0-1&lt;/td&gt;
+&lt;td&gt;HEADER&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Sequence Code&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The sequence code is a pseudo-unique code that matches request packets with
+their corresponding ACK packets. Sequence codes should be incremented after
+every ack&amp;rsquo;d packet transmission and should roll over at 256 (uint8_t will do
+this automatically).  All ack&amp;rsquo;d packets transmitted from the same node should
+use and increment the same sequence node counter to ensure that all packets
+transmitted in a short time window from the node have different sequence codes.
+Packets that require acknowledgement should include a sequence code so the
+resulting ack can be tracked back to the originating request.&lt;/p&gt;
+&lt;h3 id=&#34;valve-control&#34;&gt;Valve Control&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Valve Control Packet&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Packet Byte&lt;/th&gt;
+&lt;th&gt;Content&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0-1&lt;/td&gt;
+&lt;td&gt;HEADER&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Sequence Code&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;Ball Valve State&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;Vent State&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;Fuel Valve State&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The ignition computer receives valve control commands from the
+operator. Corresponding control signals are then sent to the propulsion system.
+Radio commands for each valve shall be represented by an integer value, should
+be of the &lt;code&gt;int8_t&lt;/code&gt; type. As there are 3 valves, a radio command shall be an
+array containing 3 integers of the following order:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Open/Close of fuel-combustion ball valve&lt;/li&gt;
+&lt;li&gt;Open/Close of fueling solenoid valve&lt;/li&gt;
+&lt;li&gt;Open/Close of venting solenoid valve&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The commands values used by each of the command is outlined in the following
+tables. &lt;em&gt;Note&lt;/em&gt;, the values here are only used at software level, whilst the
+actual signals sent to &lt;strong&gt;hardware components&lt;/strong&gt; need to be defined based on the
+particular needs.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Ball valve control&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;value&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;Standby signal that does not lead to any change in current valve action.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Reversed movement of the valve.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;Forward movement of the valve.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;255&lt;/td&gt;
+&lt;td&gt;signal for &lt;strong&gt;Ignition&lt;/strong&gt; Sequence, including opening the valve for a preset amount of time, before closing.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Venting solenoid valve control&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;value&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;Standby Signal, with no change in current valve action&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Closing&lt;/strong&gt; of the venting valve&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Opening&lt;/strong&gt; of the venting valve&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Fuel solenoid valve control&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;value&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;Standby Signal, with no change in current valve action&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Closing&lt;/strong&gt; of the Fuel valve&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Opening&lt;/strong&gt; of the Fuel valve&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;One example of a command would be &lt;code&gt;{1,-1,0}&lt;/code&gt;, denoting the unlikely command of
+forward action of ball valve, no change in action of venting valve, and the
+closing of fuel valve. For future expansion of the commands, it is recommended
+that any simple command should obtain a value ascending from 1, whilst complex
+sequence command should obtain a value descending from 127. For the valves used,
+Simple and sequence commands are defined as:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Simple command is a command that is accomplished by #one# #continuous# and
+#unidirectional# action of the valve.&lt;/li&gt;
+&lt;li&gt;Sequence commands is a command that is accomplished by #multiple#
+#discontinuous(e.g. with intervals)# and/or #multidirectional# action of the
+valve.&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+    <item>
+      <title>Docs: </title>
+      <link>/docs/spec-dartplot/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/spec-dartplot/</guid>
+      <description>
+        
+        
+        &lt;h1 id=&#34;dartplot-utility-specifications&#34;&gt;DartPlot Utility Specifications&lt;/h1&gt;
+&lt;p&gt;Version: 0.1.0&lt;br&gt;
+Date: 14 September 2019&lt;br&gt;
+Status: Current&lt;br&gt;
+Type: Software Specification&lt;br&gt;
+ID: 4S&lt;/p&gt;
+&lt;h2 id=&#34;description&#34;&gt;Description&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;dartplot&lt;/code&gt; is a utility that takes a complete csv flight log as the input.
+It will output plots for each of the sensors of interest in the form of &lt;code&gt;png&lt;/code&gt;
+images.&lt;/p&gt;
+&lt;h2 id=&#34;requirements&#34;&gt;Requirements&lt;/h2&gt;
+&lt;p&gt;The following quantities will be plotted against time (t):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;6 thermocouples (Header name TC#)&lt;/li&gt;
+&lt;li&gt;3 loadcells against time (Header name LC#)&lt;/li&gt;
+&lt;li&gt;4 pressure transducers (Header name PT#)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The utility will output to folder called &lt;code&gt;plots&lt;/code&gt; by default, in the directory
+the script was run in.&lt;/p&gt;
+&lt;p&gt;The following will also be plotted:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;1 red horizontal line at critical pressure and critical temperature&lt;/li&gt;
+&lt;li&gt;boolean sensor monitor&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;future-considerations&#34;&gt;Future Considerations&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Continuous monitor?&lt;/li&gt;
+&lt;li&gt;Find a way to process data faster?&lt;/li&gt;
+&lt;/ul&gt;
+
+      </description>
+    </item>
+    
+  </channel>
+</rss>

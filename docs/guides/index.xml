@@ -1,0 +1,228 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Astrojays Rocketry – Guides</title>
+    <link>/docs/guides/</link>
+    <description>Recent content in Guides on Astrojays Rocketry</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	  <atom:link href="/docs/guides/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+      
+        
+      
+    
+    
+    <item>
+      <title>Docs: Bit Manipulations</title>
+      <link>/docs/guides/guide-bits/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/guides/guide-bits/</guid>
+      <description>
+        
+        
+        &lt;p&gt;Version: 0.1.0&lt;br&gt;
+Date: 28 October 2019&lt;br&gt;
+Status: Draft&lt;br&gt;
+Type: Guide&lt;br&gt;
+ID: 3G&lt;/p&gt;
+&lt;h2 id=&#34;overview&#34;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Data can be packed more compactly than even the smallest primitive type allow by
+manipulating the individual bytes of the numbers. For example, an 8 bit unsigned
+integer (&lt;code&gt;uint8_t&lt;/code&gt;) can contain the number from 0-255, 8 boolean flags, 4 two
+bit numbers (0-3), a combination of 3-bit numbers (0-8) and two bit number, 2
+4-bit numbers (0-15), or any combination of these. In general, the smallest
+on-wire primitive type in modern programming languages are at least 8 bits wide,
+even boolean type which can only hold two states. In a bandwidth constrained
+application like long-distance radio signaling, every bit matters, and thus Bit
+manipulation become a handy method to pack more data in much less space.&lt;/p&gt;
+&lt;h2 id=&#34;basic-operations&#34;&gt;Basic Operations&lt;/h2&gt;
+&lt;p&gt;To manipulate numerical data types at the bit level, we must resort to binary
+operators such as AND(&amp;amp;), OR(|), XOR(|), and NOT(~). These follow the following
+truth tables (A,B are inputs, Y is the output):&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOT&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Y&lt;/th&gt;
+&lt;th&gt;A&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;AND&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Y&lt;/th&gt;
+&lt;th&gt;A&lt;/th&gt;
+&lt;th&gt;B&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;OR&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Y&lt;/th&gt;
+&lt;th&gt;A&lt;/th&gt;
+&lt;th&gt;B&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;XOR&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Y&lt;/th&gt;
+&lt;th&gt;A&lt;/th&gt;
+&lt;th&gt;B&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;These operations can be used formally to do boolean algebra. However, from a
+practical perspective, for data packing purposes, each of these operator have
+somewhat specific functions. An AND operator serves as a mask, allowing specific
+bits from a number to be &amp;ldquo;selected&amp;rdquo;. For instance:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN        = 0b010100111
+MASK      = 0b000010100 # &amp;quot;selecting&amp;quot; bits 5 and 3
+IN &amp;amp; MASK = 0b000000100
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And the OR operator can be used to &amp;ldquo;set&amp;rdquo; bits&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN           = 0b00100000
+SETBITS      = 0b00100001
+IN | SETBITS = 0b00100001
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To unset bits, a combination and &amp;amp; and ~ can be used.&lt;/p&gt;
+&lt;p&gt;Additionally, there are the left shift&lt;code&gt;(&amp;lt;&amp;lt;)&lt;/code&gt; and right shift&lt;code&gt;(&amp;lt;&amp;lt;)&lt;/code&gt; operators,
+which &amp;ldquo;move&amp;rdquo; the number over a set number of bits and fill the rest of zeroes.
+For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;0b00011 &amp;lt;&amp;lt; 3 = 0b00011000
+0b1010011 &amp;gt;&amp;gt; 4 = 0b101
+&lt;/code&gt;&lt;/pre&gt;&lt;h1 id=&#34;recipes&#34;&gt;Recipes&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Bit Flag Setting&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN |= PATTERN &amp;lt;&amp;lt; n
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Where &lt;code&gt;IN&lt;/code&gt; is an input variable, &lt;code&gt;PATTERN&lt;/code&gt; is the pattern that need to get set,
+and &lt;code&gt;n&lt;/code&gt; is the number of bits into the input where the pattern should get set.
+For instance:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN = 0b000110011
+        ~^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;and we want to set the two underlined bits to 111, we&amp;rsquo;d do&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN |= 0b11 &amp;lt;&amp;lt; 6
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It is important to note that his can only set bits, if a bit is already one it
+cannot be converted to a zero.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Bit Flag Clearing&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;To clear bits, we follow the following recipe&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN &amp;amp;= ~(PATTERN &amp;lt;&amp;lt; n)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN = 0b0001010011
+          ~~^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;and we want to clear the three underlined bits (set them back to zero), we&amp;rsquo;d use&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN &amp;amp;= ~(0b111 &amp;lt;&amp;lt; 4)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;Reading bits&lt;/strong&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;OUT = IN &amp;amp; MASK
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example, to read the 3 most significant bits from &lt;code&gt;0b0101100&lt;/code&gt;, we&amp;rsquo;d use&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;OUT = IN &amp;amp; 0b1110000
+# or
+OUT = IN &amp;amp; 0b111 &amp;lt;&amp;lt; 4
+# OUT = 0b0100000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;However the issue here is that the extracted bits will still be in their
+original columns, and thus will be as large as the originals. To remedy this, we
+can right shift by the number of bits to make the LSB of the masked output to
+be in the 2^0 place.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;OUT = (IN &amp;amp; MASK) &amp;gt;&amp;gt; n
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code&gt;OUT = (IN &amp;amp; 0b1110000) &amp;gt;&amp;gt; n
+# out = 0b010
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Thus, the easiest way to set a number of bits that might contains ones to a
+custom patters is to first &lt;em&gt;clear&lt;/em&gt; those bits, then &lt;em&gt;set&lt;/em&gt; using the OR operator.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Toggling&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Finally, toggling is pretty similar to the other two, except we use the Xor
+operator instead of OR or AND:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN ^= (PATTERN &amp;lt;&amp;lt; n)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN = 0b00110011
+       ~~^
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;To toggle the three underlined bytes, we&amp;rsquo;d use:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;IN ^= (0b111 &amp;lt;&amp;lt; 5)
+# IN = 0b11010011
+&lt;/code&gt;&lt;/pre&gt;
+      </description>
+    </item>
+    
+  </channel>
+</rss>
