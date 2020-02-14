@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "/Documentation"
 languageCode = "en-us"
 title = "Astrojays Rocketry"
 # Hugo allows theme composition (and inheritance). The precedence is from left to right.
